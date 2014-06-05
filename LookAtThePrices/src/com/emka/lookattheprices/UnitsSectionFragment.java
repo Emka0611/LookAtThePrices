@@ -20,8 +20,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.database.DatabaseDataSources;
-import com.example.products.Unit;
+import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.model.Unit;
 
 public class UnitsSectionFragment extends Fragment
 {

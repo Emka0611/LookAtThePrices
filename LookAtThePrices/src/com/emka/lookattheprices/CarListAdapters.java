@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SimpleAdapter;
 
-import com.example.database.DatabaseDataSources;
-import com.example.products.Product;
+import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.model.Product;
 
 class CarListAdapter extends SimpleAdapter
 {

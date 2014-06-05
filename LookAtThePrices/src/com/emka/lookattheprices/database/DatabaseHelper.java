@@ -1,4 +1,4 @@
-package com.example.database;
+package com.emka.lookattheprices.database;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -6,7 +6,7 @@ import java.util.*;
 import android.content.Context;
 import android.database.sqlite.*;
 
-import com.example.tables.*;
+import com.emka.lookattheprices.tables.*;
 
 public class DatabaseHelper extends SQLiteOpenHelper
 {

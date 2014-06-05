@@ -1,4 +1,4 @@
-package com.example.products;
+package com.emka.lookattheprices.model;
 
 public class Product implements Comparable<Product>
 {

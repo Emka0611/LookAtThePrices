@@ -1,6 +1,6 @@
-package com.example.products;
+package com.emka.lookattheprices.model;
 
-import com.example.database.DatabaseDataSources;
+import com.emka.lookattheprices.database.DatabaseDataSources;
 
 public class Price
 {

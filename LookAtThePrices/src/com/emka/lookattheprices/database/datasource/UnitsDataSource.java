@@ -1,10 +1,10 @@
-package com.example.database.datasource;
+package com.emka.lookattheprices.database.datasource;
 
 import java.util.*;
 
-import com.example.database.DatabaseHelper;
-import com.example.products.*;
-import com.example.tables.*;
+import com.emka.lookattheprices.database.DatabaseHelper;
+import com.emka.lookattheprices.model.*;
+import com.emka.lookattheprices.tables.*;
 
 import android.content.*;
 import android.database.*;

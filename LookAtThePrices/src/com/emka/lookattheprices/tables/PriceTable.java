@@ -1,4 +1,4 @@
-package com.example.tables;
+package com.emka.lookattheprices.tables;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 

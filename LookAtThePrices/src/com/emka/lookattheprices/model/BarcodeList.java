@@ -1,8 +1,8 @@
-package com.example.products;
+package com.emka.lookattheprices.model;
 
 import java.util.List;
 
-import com.example.database.DatabaseDataSources;
+import com.emka.lookattheprices.database.DatabaseDataSources;
 
 public class BarcodeList
 {

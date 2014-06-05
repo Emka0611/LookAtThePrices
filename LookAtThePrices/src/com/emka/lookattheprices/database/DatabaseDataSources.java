@@ -1,12 +1,12 @@
-package com.example.database;
+package com.emka.lookattheprices.database;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 
-import com.example.database.datasource.*;
-import com.example.products.*;
+import com.emka.lookattheprices.database.datasource.*;
+import com.emka.lookattheprices.model.*;
 
 public class DatabaseDataSources
 {

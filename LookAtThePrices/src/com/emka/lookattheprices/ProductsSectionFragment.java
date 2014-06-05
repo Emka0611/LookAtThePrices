@@ -31,12 +31,12 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.example.database.DatabaseDataSources;
-import com.example.products.Barcode;
-import com.example.products.BarcodeList;
-import com.example.products.Category;
-import com.example.products.PriceHistory;
-import com.example.products.Product;
+import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.model.Barcode;
+import com.emka.lookattheprices.model.BarcodeList;
+import com.emka.lookattheprices.model.Category;
+import com.emka.lookattheprices.model.PriceHistory;
+import com.emka.lookattheprices.model.Product;
 
 public class ProductsSectionFragment extends Fragment
 {

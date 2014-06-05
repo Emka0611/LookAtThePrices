@@ -17,11 +17,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.database.DatabaseDataSources;
-import com.example.products.Category;
-import com.example.products.Price;
-import com.example.products.Product;
-import com.example.products.Unit;
+import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.model.Category;
+import com.emka.lookattheprices.model.Price;
+import com.emka.lookattheprices.model.Product;
+import com.emka.lookattheprices.model.Unit;
 
 public class NewProductActivity extends Activity
 {

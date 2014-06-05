@@ -1,4 +1,4 @@
-package com.example.database.datasource;
+package com.emka.lookattheprices.database.datasource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,9 +10,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.database.DatabaseHelper;
-import com.example.products.Price;
-import com.example.tables.PriceTable;
+import com.emka.lookattheprices.database.DatabaseHelper;
+import com.emka.lookattheprices.model.Price;
+import com.emka.lookattheprices.tables.PriceTable;
 
 public class PricesDataSource
 {

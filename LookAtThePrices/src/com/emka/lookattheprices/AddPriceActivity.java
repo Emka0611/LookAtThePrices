@@ -13,9 +13,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.database.DatabaseDataSources;
-import com.example.products.Price;
-import com.example.products.Unit;
+import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.model.Price;
+import com.emka.lookattheprices.model.Unit;
 
 public class AddPriceActivity extends Activity
 {

@@ -7,8 +7,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import com.example.database.DatabaseDataSources;
-import com.example.products.Product;
+import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.model.Product;
 
 class ProductsAutoCompleteAdapter extends ArrayAdapter<Product> implements Filterable
 {

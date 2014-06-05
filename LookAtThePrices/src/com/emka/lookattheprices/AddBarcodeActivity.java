@@ -11,8 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.database.DatabaseDataSources;
-import com.example.products.Barcode;
+import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.model.Barcode;
 
 public class AddBarcodeActivity extends Activity
 {
