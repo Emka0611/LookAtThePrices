@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Look at the prices</string>
+	<string name="app_start_fragment">Produkty</string>
+    <string name="title_products">Produkty</string>
+    <string name="title_shopping_lists">Listy zakupów</string>
+    
+    <string name="action_new">Dodaj</string>
+    <string name="action_delete">Usuń</string>
+    <string name="action_add_examples">Dodaj przykłady</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_accept">Dodaj</string>
+    <string name="action_scan">Skanuj</string>
+    <string name="action_search">Szukaj</string>
+    <string name="action_edit">Edytuj</string>
+    <string name="action_list_prices">Ceny</string>
+    <string name="action_list_barcodes">Kody kreskowe</string>
+
+    <string name="drawer_open">BUM</string>
+    <string name="drawer_close">BUM</string>
+    <string name="title_product_new">Nowy produkt</string>
+    <string name="title_product_edit">Edytuj produkt</string>
+    <string name="title_price_new">Nowa cena</string>
+    <string name="title_barcode_new">Nowy kod kreskowy</string>
+    
+    <string name="general_product_name_hint">Nazwa produktu</string>
+    <string name="product_name_hint">Nazwa szczegółowa</string>
+    <string name="new_unit_hint">Nowa jednostka</string>
+    <string name="new_category_hint">Nowa kategoria</string>
+    <string name="product_price_hint">Cena</string>
+    <string name="search_product_hint">Szukaj</string>
+    
+
+    <string name="cancel">Anuluj</string>
+    <string name="save">Zapisz</string>
+    <string name="quantity">Ilość</string>
+    <string name="price">Cena</string>
+    <string name="unit_price">Cena jednostkowa:</string>
+    <string name="category">Kategoria</string>
+    <string name="unit">Jednostka</string>
+    <string name="calculate">Oblicz</string>
+    <string name="categories">Kategorie</string>
+    <string name="price_value">0.00</string>
+    <string name="zloty">zł</string>
+    <string name="search_title">Szukaj</string>
+    <string name="barcode">Kod kreskowy:</string>
+
+    <string-array name="drawerListArray">
+		<item>Produkty</item>
+        <item>Kategorie</item>
+        <item>Jednostki</item>
+
+    </string-array>
+    
+</resources>
