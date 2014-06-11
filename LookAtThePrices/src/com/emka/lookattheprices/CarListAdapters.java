@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SimpleAdapter;
 
-import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.database.DatabaseDataSource;
 import com.emka.lookattheprices.model.Product;
 
 class CarListAdapter extends SimpleAdapter
@@ -22,7 +22,6 @@ class CarListAdapter extends SimpleAdapter
 	{
 		super(context, listMap, resource, from, to);
 		this.context = context;
-		DatabaseDataSources.open();
 	}
 
 	@Override
@@ -42,7 +41,7 @@ class CarListAdapter extends SimpleAdapter
 				@Override
 				public void onClick(View v)
 				{
-					Product product = DatabaseDataSources.getProduct(item.get("name"));
+					Product product = DatabaseDataSource.getProduct(item.get("name"));
 
 					ProductsSectionFragment frag = (ProductsSectionFragment) ((MainActivity) context).getCurrentFragment();
 					frag.setSelectedProductId(product.getId());

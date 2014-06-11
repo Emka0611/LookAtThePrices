@@ -1,59 +1,135 @@
 package com.emka.lookattheprices.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Product implements Comparable<Product>
 {
-	private long m_id;
+	private int id;
 
-	private String m_Name;
-	private long m_categoryId;
-	private PriceHistory m_priceHistory;
-	private BarcodeList m_barcodeList;
-
-	public Product(long id, String generalName, long categoryId)
+	private String name;
+	private Category category;
+	private List<Price> priceHistory = new ArrayList<Price>();
+	private List<Barcode> barcodesList = new ArrayList<Barcode>();
+	
+	public Product()
+	{		
+	}
+	
+	public Product(String name, Category category)
 	{
-		this.m_id = id;
-		this.m_Name = generalName;
-		this.m_categoryId = categoryId;
-		this.m_priceHistory = new PriceHistory(m_id);
-		this.m_barcodeList = new BarcodeList(m_id);
+		this.name = name;
+		this.category = category;
+	}
+	
+	public Product(int id, String name, Category category)
+	{
+		this.name = name;
+		this.category = category;
 	}
 
-	public long getId()
+	public int getId()
 	{
-		return m_id;
+		return id;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
 	}
 
 	public String getName()
 	{
-		return m_Name;
+		return name;
 	}
 
-	public long getCategoryId()
+	public void setName(String name)
 	{
-		return m_categoryId;
+		this.name = name;
 	}
 
-	public PriceHistory getPriceHistory()
+	public Category getCategory()
 	{
-		return m_priceHistory;
+		return category;
+	}
+	
+	public void setCategory(Category category)
+	{
+		this.category = category;
 	}
 
-	public BarcodeList getBarcodeList()
+	public List<Price> getPriceHistory()
 	{
-		return m_barcodeList;
+		return priceHistory;
+	}
+	
+	public String[] priceHistoryToArray()
+	{
+		String[] tab = new String[priceHistory.size()];
+		for(int i=0; i<priceHistory.size(); i++)
+		{
+			tab[i] = priceHistory.get(i).toString();
+		}
+		return tab;
 	}
 
-	@Override
-	public String toString()
+	public void setPriceHistory(List<Price> priceHistory)
 	{
-		StringBuilder builder = new StringBuilder();
-		builder.append(m_Name);
-		return builder.toString();
+		this.priceHistory = priceHistory;
+	}
+	
+	public Price getLatestPrice()
+	{
+		int location = priceHistory.size()-1;
+		return priceHistory.get(location);
+	}
+	
+	public void addPrice(Price price)
+	{
+		priceHistory.add(price);
+	}
+
+	public List<Barcode> getBarcodesList()
+	{
+		return barcodesList;
+	}
+	
+	public String[] barcodesListToArray()
+	{
+		String[] tab = new String[barcodesList.size()];
+		for(int i=0; i<barcodesList.size(); i++)
+		{
+			tab[i] = barcodesList.get(i).toString();
+		}
+		return tab;
+	}
+
+	public void setBarcodesList(List<Barcode> barcodesList)
+	{
+		this.barcodesList = barcodesList;
+	}
+
+	public void addBarcode(Barcode barcode)
+	{
+		barcodesList.add(barcode);		
 	}
 
 	@Override
 	public int compareTo(Product arg)
 	{
 		return getName().compareTo(arg.getName());
+	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder builder = new StringBuilder();
+		builder.append(name);
+		return builder.toString();
+	}
+
+	public Price getBestPrice() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

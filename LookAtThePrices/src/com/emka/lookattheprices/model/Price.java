@@ -1,55 +1,80 @@
 package com.emka.lookattheprices.model;
 
-import com.emka.lookattheprices.database.DatabaseDataSources;
+import java.util.Date;
 
 public class Price
 {
-	private long m_id;
-	private long m_product_id;
-	private long m_unit_id;
-	private double m_price;
-	private double m_quantity;
+	private int id;
 	
-	private String m_date;
-	
-	public Price(long id, long product_id, double price, double quantity, long unit_id, String date)
-	{
-		this.m_id = id;
-		this.m_product_id = product_id;
-		this.m_price = price;
-		this.m_quantity = quantity;
-		this.m_unit_id = unit_id;
-		this.m_date = date;
+	private double price;
+	private Unit unit;
+	private double quantity;	
+	private Date date;
+
+	public Price()
+	{		
 	}
 	
-	public long getId()
+	public Price(double price, Unit unit, double quantity)
 	{
-		return m_id;
+		this.price=price;
+		this.unit=unit;
+		this.quantity=quantity;
+		this.date = new Date();
 	}
-	
-	public long getProductId()
+	public int getId()
 	{
-		return m_product_id;
+		return id;
 	}
 	
 	public double getPrice()
 	{
-		return m_price;
+		return price;
 	}
 	
-	public long getUnitId()
+	public Unit getUnit()
 	{
-		return m_unit_id;
+		return unit;
 	}
 	
-	public String getDate()
+	public Date getDate()
 	{
-		return m_date;
+		return date;
+	}
+	
+	public double getQuantity()
+	{
+		return quantity;
+	}
+
+	public void setQuantity(double quantity)
+	{
+		this.quantity = quantity;
+	}
+
+	public void setId(int id)
+	{
+		this.id = id;
+	}
+
+	public void setPrice(double price)
+	{
+		this.price = price;
+	}
+
+	public void setUnit(Unit unit)
+	{
+		this.unit = unit;
+	}
+
+	public void setDate(Date date)
+	{
+		this.date = date;
 	}
 	
 	public double getUnitPrice()
 	{
-		double unitPrice = m_price/m_quantity;
+		double unitPrice = price/quantity;
 		unitPrice *= 100;
 		unitPrice = Math.round(unitPrice);
 	    unitPrice/= 100; 
@@ -60,31 +85,18 @@ public class Price
 	@Override
 	public String toString()
 	{
-		Unit unit = loadUnit();
-		
 		StringBuilder builder = new StringBuilder();
-		builder.append(m_price);
-		builder.append("z³\t\t");
-		builder.append(getUnitPrice() + "z³/");
+		builder.append(price);
+		builder.append("zl ");
+		builder.append(getUnitPrice() + "zl/");
 		builder.append(unit.getName());
-		builder.append("\t\t" + m_date);
 		return builder.toString();
-	}
-	
-	private Unit loadUnit()
-	{
-		DatabaseDataSources.unitsDataSource.open();
-		Unit unit = DatabaseDataSources.unitsDataSource.getUnit(m_unit_id);
-		DatabaseDataSources.unitsDataSource.close();
-		return unit;
 	}
 
 	public String unitPriceToString()
 	{
-		Unit unit = loadUnit();
-		
 		StringBuilder builder = new StringBuilder();
-		builder.append(getUnitPrice() + "z³/");
+		builder.append(getUnitPrice() + "zl/");
 		builder.append(unit.getName());
 		return builder.toString();
 	}

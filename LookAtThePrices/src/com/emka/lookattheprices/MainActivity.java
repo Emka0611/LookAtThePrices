@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
-import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.database.DatabaseDataSource;
 
 public class MainActivity extends Activity implements ActionBar.OnNavigationListener
 {
@@ -68,7 +68,6 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 	@Override
 	public void onDestroy()
 	{
-		//DatabaseHelper.dropDatabase();
 		super.onDestroy();
 	}
 
@@ -126,18 +125,14 @@ public class MainActivity extends Activity implements ActionBar.OnNavigationList
 
 	private void databaseInit()
 	{
-		DatabaseDataSources.categoriesDataSource.open();
-		DatabaseDataSources.addCategory("Rozne");
-		DatabaseDataSources.addCategory("Spozywcze");
-		DatabaseDataSources.addCategory("Higieniczne");
-		DatabaseDataSources.addCategory("Napoje");
-		DatabaseDataSources.categoriesDataSource.close();
+		DatabaseDataSource.addCategory("Rozne");
+		DatabaseDataSource.addCategory("Spozywcze");
+		DatabaseDataSource.addCategory("Higieniczne");
+		DatabaseDataSource.addCategory("Napoje");
 
-		DatabaseDataSources.unitsDataSource.open();
-		DatabaseDataSources.addUnit("kg");
-		DatabaseDataSources.addUnit("szt");
-		DatabaseDataSources.addUnit("litr");
-		DatabaseDataSources.unitsDataSource.close();
+		DatabaseDataSource.addUnit("kg");
+		DatabaseDataSource.addUnit("szt");
+		DatabaseDataSource.addUnit("litr");
 	}
 
 	public Fragment getCurrentFragment()

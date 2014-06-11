@@ -13,8 +13,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.emka.lookattheprices.database.DatabaseDataSources;
-import com.emka.lookattheprices.model.Price;
+import com.emka.lookattheprices.database.DatabaseDataSource;
+import com.emka.lookattheprices.model.Product;
 import com.emka.lookattheprices.model.Unit;
 
 public class AddPriceActivity extends Activity
@@ -32,7 +32,7 @@ public class AddPriceActivity extends Activity
 	private TextView mUnitName = null;
 
 	// product
-	private long mProductId;
+	private int mProductId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -43,14 +43,13 @@ public class AddPriceActivity extends Activity
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		getProductId();
-		openDataSource();
 		initSpinners();
 		initEditTexts();
 	}
 	
 	private void initSpinners()
 	{
-		List<Unit> unitsList = DatabaseDataSources.getAllUnits();
+		List<Unit> unitsList = DatabaseDataSource.getAllUnits();
 		ArrayAdapter<Unit> unitsAdapter = new ArrayAdapter<Unit>(this, android.R.layout.simple_spinner_item, unitsList);
 		unitsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mUnitsSpinner = (Spinner) findViewById(R.id.unit_spinner);
@@ -71,27 +70,15 @@ public class AddPriceActivity extends Activity
 		});
 	}
 	
-	private void openDataSource()
-	{
-		DatabaseDataSources.open();
-	}
-
-	private void closeDataSource()
-	{
-		DatabaseDataSources.close();
-	}
-	
 	@Override
 	public void onResume()
 	{
-		openDataSource();
 		super.onResume();
 	}
 
 	@Override
 	public void onPause()
 	{
-		closeDataSource();
 		super.onPause();
 	}
 	
@@ -130,7 +117,7 @@ public class AddPriceActivity extends Activity
 	
 	private void initProductName()
 	{
-		String productName = DatabaseDataSources.getProduct(mProductId).getName();
+		String productName = DatabaseDataSource.getProduct(mProductId).getName();
 		mProductNameField.setText(productName);
 	}
 	
@@ -138,7 +125,7 @@ public class AddPriceActivity extends Activity
 	{
 		if (false != getIntent().getExtras().containsKey(ProductsSectionFragment.PRODUCT_SELECTED))
 		{
-			mProductId = getIntent().getExtras().getLong(ProductsSectionFragment.PRODUCT_SELECTED);
+			mProductId = getIntent().getExtras().getInt(ProductsSectionFragment.PRODUCT_SELECTED);
 		}
 	}
 	
@@ -181,13 +168,13 @@ public class AddPriceActivity extends Activity
 			// to create price
 			double priceValue = Double.parseDouble(mPriceValueField.getText().toString());
 			double quantity = Double.parseDouble(mQuantityField.getText().toString());
-			long unitId = ((Unit) mUnitsSpinner.getSelectedItem()).getId();
+			Unit unit = (Unit) mUnitsSpinner.getSelectedItem();
 
-			Price newPrice = DatabaseDataSources.addPrice(mProductId, priceValue, quantity, unitId);
+			Product updatedPrice = DatabaseDataSource.addPrice(mProductId, priceValue, quantity, unit);
 			
-			if (null != newPrice)
+			if (null != updatedPrice)
 			{
-				Toast.makeText(this, "Cenê dodano pomyœlnie", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Cene dodano pomyslnie", Toast.LENGTH_SHORT).show();
 				onBackPressed();
 			}
 			else

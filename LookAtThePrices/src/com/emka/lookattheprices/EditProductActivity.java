@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.database.DatabaseDataSource;
 import com.emka.lookattheprices.model.Category;
 import com.emka.lookattheprices.model.Product;
 
@@ -25,7 +25,7 @@ public class EditProductActivity extends Activity
 	private ArrayAdapter<Category> categoriesAdapter = null;
 
 	// product
-	private long mProductId;
+	private int mProductId;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -35,8 +35,7 @@ public class EditProductActivity extends Activity
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		getProductId();
-		openDataSource();
+		getProductId();	
 		initSpinners();
 		initEditTexts();
 	}
@@ -44,14 +43,12 @@ public class EditProductActivity extends Activity
 	@Override
 	public void onResume()
 	{
-		openDataSource();
 		super.onResume();
 	}
 
 	@Override
 	public void onPause()
 	{
-		closeDataSource();
 		super.onPause();
 	}
 
@@ -66,10 +63,11 @@ public class EditProductActivity extends Activity
 		{
 			// to update product
 			String name = mProductNameField.getText().toString();
-			long categoryId = ((Category) mCategorySpinner.getSelectedItem()).getId();
+			Category category= (Category) mCategorySpinner.getSelectedItem();
+			Product updatedProduct = new Product(mProductId, name, category);
 
-			DatabaseDataSources.updateProduct(mProductId, name, categoryId);
-			Toast.makeText(this, "Produkt zmieniono pomyœlnie", Toast.LENGTH_SHORT).show();
+			DatabaseDataSource.updateProduct(updatedProduct);
+			Toast.makeText(this, "Produkt zmieniono pomyslnie", Toast.LENGTH_SHORT).show();
 			onBackPressed();
 		}
 		else
@@ -78,20 +76,10 @@ public class EditProductActivity extends Activity
 
 		}
 	}
-
-	private void openDataSource()
-	{
-		DatabaseDataSources.open();
-	}
-
-	private void closeDataSource()
-	{
-		DatabaseDataSources.close();
-	}
-
+	
 	private void initSpinners()
 	{
-		categoriesList = DatabaseDataSources.getAllCategories();
+		categoriesList = DatabaseDataSource.getAllCategories();
 		categoriesAdapter = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_item, categoriesList);
 		categoriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mCategorySpinner = (Spinner) findViewById(R.id.cat_spinner);
@@ -106,8 +94,8 @@ public class EditProductActivity extends Activity
 
 	private void setProductParameters()
 	{
-		Product product = DatabaseDataSources.getProduct(mProductId);
-		Category category = getCategory(product.getCategoryId());
+		Product product = DatabaseDataSource.getProduct(mProductId);
+		Category category = getCategory(product.getCategory().getId());
 
 		int categoryPosition = categoriesAdapter.getPosition(category);
 
@@ -146,7 +134,7 @@ public class EditProductActivity extends Activity
 	{
 		if (false != getIntent().getExtras().containsKey(ProductsSectionFragment.PRODUCT_SELECTED))
 		{
-			mProductId = getIntent().getExtras().getLong(ProductsSectionFragment.PRODUCT_SELECTED);
+			mProductId = getIntent().getExtras().getInt(ProductsSectionFragment.PRODUCT_SELECTED);
 		}
 	}
 

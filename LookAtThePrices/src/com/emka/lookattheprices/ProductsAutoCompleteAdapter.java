@@ -7,7 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 
-import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.database.DatabaseDataSource;
 import com.emka.lookattheprices.model.Product;
 
 class ProductsAutoCompleteAdapter extends ArrayAdapter<Product> implements Filterable
@@ -18,8 +18,7 @@ class ProductsAutoCompleteAdapter extends ArrayAdapter<Product> implements Filte
 	public ProductsAutoCompleteAdapter(Context context, int textViewResourceId)
 	{
 		super(context, textViewResourceId);
-		DatabaseDataSources.open();
-		resultList = DatabaseDataSources.getAllProducts();
+		resultList = DatabaseDataSource.getAllProducts();
 		fragment = (ProductsSectionFragment) ((MainActivity) context).getCurrentFragment();
 	}
 
@@ -56,7 +55,7 @@ class ProductsAutoCompleteAdapter extends ArrayAdapter<Product> implements Filte
 
 			private List<Product> autocomplete(String substring)
 			{
-				return DatabaseDataSources.getProducts(substring);
+				return DatabaseDataSource.getProducts(substring);
 			}
 
 			@Override
@@ -72,7 +71,7 @@ class ProductsAutoCompleteAdapter extends ArrayAdapter<Product> implements Filte
 					notifyDataSetInvalidated();
 					if (null == constraint)
 					{
-						fragment.updateListAdapter(DatabaseDataSources.getAllProducts());
+						fragment.updateListAdapter(DatabaseDataSource.getAllProducts());
 					}
 					else
 					{

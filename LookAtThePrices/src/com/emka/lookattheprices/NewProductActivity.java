@@ -17,7 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.database.DatabaseDataSource;
 import com.emka.lookattheprices.model.Category;
 import com.emka.lookattheprices.model.Price;
 import com.emka.lookattheprices.model.Product;
@@ -56,7 +56,6 @@ public class NewProductActivity extends Activity
 
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-		openDataSource();
 		initSpinners();
 		initEditTexts();
 	}
@@ -92,14 +91,12 @@ public class NewProductActivity extends Activity
 	@Override
 	public void onResume()
 	{
-		openDataSource();
 		super.onResume();
 	}
 
 	@Override
 	public void onPause()
 	{
-		closeDataSource();
 		super.onPause();
 	}
 
@@ -119,37 +116,28 @@ public class NewProductActivity extends Activity
 		{
 			// to create product
 			String generalName = mProductNameField.getText().toString();
-			long categoryId = ((Category) mCategorySpinner.getSelectedItem()).getId();
+			Category category = (Category) mCategorySpinner.getSelectedItem();
 
 			// to create price
 			double priceValue = Double.parseDouble(mPriceValueField.getText().toString());
 			double quantity = Double.parseDouble(mQuantityField.getText().toString());
-			long unitId = ((Unit) mUnitsSpinner.getSelectedItem()).getId();
+			Unit unit = (Unit) mUnitsSpinner.getSelectedItem();
 
 			// to create barcode
 			String barcode = mBarcodeField.getText().toString();
 
-			Product newProduct = DatabaseDataSources.addProduct(generalName, categoryId);
+			Price price = new Price(priceValue, unit, quantity);
+			Product newProduct = DatabaseDataSource.addProduct(generalName, category, price);
 
 			if (null != newProduct)
 			{
-				openDataSource();
-				Price newPrice = DatabaseDataSources.addPrice(newProduct.getId(), priceValue, quantity, unitId);
-
 				if (0 != barcode.length())
 				{
-					DatabaseDataSources.addBarcode(newProduct.getId(), barcode);
+					DatabaseDataSource.addBarcode(newProduct.getId(), barcode);
 				}
-
-				if (null != newPrice)
-				{
-					Toast.makeText(this, "Produkt dodano pomyœlnie", Toast.LENGTH_SHORT).show();
-					onBackPressed();
-				}
-				else
-				{
-					reportError();
-				}
+				
+				Toast.makeText(this, "Produkt dodano pomyslnie", Toast.LENGTH_SHORT).show();
+				onBackPressed();
 			}
 			else
 			{
@@ -163,25 +151,15 @@ public class NewProductActivity extends Activity
 		}
 	}
 
-	private void openDataSource()
-	{
-		DatabaseDataSources.open();
-	}
-
-	private void closeDataSource()
-	{
-		DatabaseDataSources.close();
-	}
-
 	private void initSpinners()
 	{
-		List<Category> categoriesList = DatabaseDataSources.getAllCategories();
+		List<Category> categoriesList = DatabaseDataSource.getAllCategories();
 		ArrayAdapter<Category> categoriesAdapter = new ArrayAdapter<Category>(this, android.R.layout.simple_spinner_item, categoriesList);
 		categoriesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mCategorySpinner = (Spinner) findViewById(R.id.cat_spinner);
 		mCategorySpinner.setAdapter(categoriesAdapter);
 
-		List<Unit> unitsList = DatabaseDataSources.getAllUnits();
+		List<Unit> unitsList = DatabaseDataSource.getAllUnits();
 		ArrayAdapter<Unit> unitsAdapter = new ArrayAdapter<Unit>(this, android.R.layout.simple_spinner_item, unitsList);
 		unitsAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mUnitsSpinner = (Spinner) findViewById(R.id.unit_spinner);
@@ -236,22 +214,25 @@ public class NewProductActivity extends Activity
 
 	private void updateUnitPrice()
 	{
-		String unitCurrency = getResources().getString(R.string.zloty);
-		String unitName = ((Unit) mUnitsSpinner.getSelectedItem()).getName();
-
-		mUnitName.setText(unitCurrency + "/" + unitName);
-
-		if (0 != mPriceValueField.getText().toString().length() && 0 != mQuantityField.getText().toString().length())
+		if(null != mUnitsSpinner.getSelectedItem())
 		{
-			double priceValue = Double.parseDouble(mPriceValueField.getText().toString());
-			double quantity = Double.parseDouble(mQuantityField.getText().toString());
-
-			Double unitPrice = priceValue / quantity;
-			unitPrice *= 100;
-			unitPrice = (double) Math.round(unitPrice);
-			unitPrice /= 100;
-
-			mUnitPriceValue.setText(unitPrice.toString());
+			String unitName = ((Unit) mUnitsSpinner.getSelectedItem()).getName();	
+			String unitCurrency = getResources().getString(R.string.zloty);
+	
+			mUnitName.setText(unitCurrency + "/" + unitName);
+	
+			if (0 != mPriceValueField.getText().toString().length() && 0 != mQuantityField.getText().toString().length())
+			{
+				double priceValue = Double.parseDouble(mPriceValueField.getText().toString());
+				double quantity = Double.parseDouble(mQuantityField.getText().toString());
+	
+				Double unitPrice = priceValue / quantity;
+				unitPrice *= 100;
+				unitPrice = (double) Math.round(unitPrice);
+				unitPrice /= 100;
+	
+				mUnitPriceValue.setText(unitPrice.toString());
+			}
 		}
 	}
 

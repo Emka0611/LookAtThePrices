@@ -31,11 +31,8 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.emka.lookattheprices.database.DatabaseDataSources;
-import com.emka.lookattheprices.model.Barcode;
-import com.emka.lookattheprices.model.BarcodeList;
+import com.emka.lookattheprices.database.DatabaseDataSource;
 import com.emka.lookattheprices.model.Category;
-import com.emka.lookattheprices.model.PriceHistory;
 import com.emka.lookattheprices.model.Product;
 
 public class ProductsSectionFragment extends Fragment
@@ -59,7 +56,7 @@ public class ProductsSectionFragment extends Fragment
 	private String mBarcode = "";
 	private boolean mReturnedFromScanning = false;
 
-	long selectedProductId = 0;
+	int selectedProductId = 0;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -67,8 +64,6 @@ public class ProductsSectionFragment extends Fragment
 		setHasOptionsMenu(true);
 
 		mRootView = inflater.inflate(R.layout.fragment_list, container, false);
-
-		DatabaseDataSources.open();
 
 		mActionBarEditText = (AutoCompleteTextView) inflater.inflate(R.layout.actionbar_search_product_edittext, null);
 		setUpActionBarEditText();
@@ -152,7 +147,7 @@ public class ProductsSectionFragment extends Fragment
 
 	private void onDeleteItemClick()
 	{
-		DatabaseDataSources.deleteProduct(selectedProductId);
+		DatabaseDataSource.deleteProduct(selectedProductId);
 		Toast.makeText(getActivity(), "Produkt usuniêto pomyœlnie", Toast.LENGTH_LONG).show();
 		onResume();
 	}
@@ -168,10 +163,9 @@ public class ProductsSectionFragment extends Fragment
 	@Override
 	public void onResume()
 	{
-		DatabaseDataSources.open();
 		if (false == isSearchModeEnabled() && false == mReturnedFromScanning)
 		{
-			addAll(DatabaseDataSources.getAllProducts());
+			addAll(DatabaseDataSource.getAllProducts());
 		}
 		mReturnedFromScanning = false;
 		super.onResume();
@@ -180,7 +174,6 @@ public class ProductsSectionFragment extends Fragment
 	@Override
 	public void onPause()
 	{
-		DatabaseDataSources.close();
 		super.onPause();
 	}
 
@@ -191,7 +184,7 @@ public class ProductsSectionFragment extends Fragment
 			if (resultCode == Activity.RESULT_OK)
 			{
 				mBarcode = data.getExtras().getString(BARCODE);
-				performSearchByBarcode();
+				performSearchByBarcode(mBarcode);
 			}
 		}
 	}
@@ -217,7 +210,7 @@ public class ProductsSectionFragment extends Fragment
 			mMenu.findItem(R.id.action_search).setVisible(true);
 			mMenu.findItem(R.id.action_new).setVisible(true);
 			mMenu.findItem(R.id.action_scan).setVisible(false);
-			addAll(DatabaseDataSources.getAllProducts());
+			addAll(DatabaseDataSource.getAllProducts());
 		}
 	}
 
@@ -247,7 +240,7 @@ public class ProductsSectionFragment extends Fragment
 	private void setUpAdapter()
 	{
 		mAdapter = new SeparatedListAdapter(getActivity());
-		List<Category> catList = DatabaseDataSources.getAllCategories();
+		List<Category> catList = DatabaseDataSource.getAllCategories();
 
 		List<Product> list = null;
 		SimpleAdapter adapter = null;
@@ -255,7 +248,7 @@ public class ProductsSectionFragment extends Fragment
 		for (int i = 0; i < catList.size(); i++)
 		{
 			List<Map<String, ?>> listMap = new LinkedList<Map<String, ?>>();
-			list = DatabaseDataSources.getProductsOfCategory(catList.get(i).getId());
+			list = DatabaseDataSource.getProductsOfCategory(catList.get(i).getId());
 			sortList(list);
 			for (int j = 0; j < list.size(); j++)
 			{
@@ -273,7 +266,7 @@ public class ProductsSectionFragment extends Fragment
 	private void addAll(List<Product> resultList)
 	{
 		mAdapter.clear();
-		List<Category> catList = DatabaseDataSources.getAllCategories();
+		List<Category> catList = DatabaseDataSource.getAllCategories();
 
 		List<Product> list = null;
 		SimpleAdapter adapter = null;
@@ -323,7 +316,7 @@ public class ProductsSectionFragment extends Fragment
 	{
 		Map<String, String> item = new HashMap<String, String>();
 		item.put(ITEM_NAME, product.getName());
-		item.put(ITEM_PRICE, product.getPriceHistory().getBestPrice().unitPriceToString());
+		item.put(ITEM_PRICE, product.getBestPrice().unitPriceToString());
 		return item;
 	}
 
@@ -344,7 +337,7 @@ public class ProductsSectionFragment extends Fragment
 		List<Product> products = new ArrayList<Product>();
 		for (int i = 0; i < resultList.size(); i++)
 		{
-			if (resultList.get(i).getCategoryId() == catId)
+			if (resultList.get(i).getCategory().getId() == catId)
 			{
 				products.add(resultList.get(i));
 			}
@@ -358,16 +351,15 @@ public class ProductsSectionFragment extends Fragment
 		startActivityForResult(i, GET_BARCODE_REQUEST);
 	}
 
-	private void performSearchByBarcode()
+	private void performSearchByBarcode(String barcode)
 	{
-		DatabaseDataSources.open();
-		List<Barcode> barcodesList = DatabaseDataSources.getBarcodesFromDatabase(mBarcode);
+		//TODO: List<Barcode> barcodesList = DatabaseDataSource.getBarcodesFromDatabase(mBarcode);
 		List<Product> resultList = new ArrayList<Product>();
 
-		for (int i = 0; i < barcodesList.size(); i++)
+/*		for (int i = 0; i < barcodesList.size(); i++)
 		{
-			resultList.add(DatabaseDataSources.getProduct(barcodesList.get(i).getProductId()));
-		}
+			resultList.add(DatabaseDataSource.getProduct(barcodesList.get(i).getProductId()));
+		}*/
 
 		if (resultList.size() > 0)
 		{
@@ -397,18 +389,17 @@ public class ProductsSectionFragment extends Fragment
 		popup.show();
 	}
 
-	public void setSelectedProductId(long id)
+	public void setSelectedProductId(int id)
 	{
 		selectedProductId = id;
 	}
 
 	public Dialog onCreateBarcodesDialog()
 	{
-		Product product = DatabaseDataSources.getProduct(selectedProductId);
-		BarcodeList list = product.getBarcodeList();
+		Product product = DatabaseDataSource.getProduct(selectedProductId);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.action_list_barcodes).setItems(list.toArray(), new DialogInterface.OnClickListener()
+		builder.setTitle(R.string.action_list_barcodes).setItems(product.barcodesListToArray(), new DialogInterface.OnClickListener()
 		{
 			public void onClick(DialogInterface dialog, int which)
 			{
@@ -421,11 +412,10 @@ public class ProductsSectionFragment extends Fragment
 
 	public Dialog onCreatePricesDialog()
 	{
-		Product product = DatabaseDataSources.getProduct(selectedProductId);
-		PriceHistory list = product.getPriceHistory();
+		Product product = DatabaseDataSource.getProduct(selectedProductId);
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.action_list_prices).setItems(list.toArray(), new DialogInterface.OnClickListener()
+		builder.setTitle(R.string.action_list_prices).setItems(product.priceHistoryToArray(), new DialogInterface.OnClickListener()
 		{
 			public void onClick(DialogInterface dialog, int which)
 			{

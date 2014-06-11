@@ -1,6 +1,6 @@
 package com.emka.lookattheprices;
 
-import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.database.DatabaseDataSource;
 
 import android.app.Application;
 
@@ -9,7 +9,7 @@ public class GetBetterPriceApplication extends Application
 	@Override
 	public void onCreate()
 	{
-		new DatabaseDataSources(this);
+		new DatabaseDataSource();
 		super.onCreate();
 	}
 

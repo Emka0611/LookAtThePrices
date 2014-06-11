@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.database.DatabaseDataSource;
 import com.emka.lookattheprices.model.Unit;
 
 public class UnitsSectionFragment extends Fragment
@@ -45,9 +45,7 @@ public class UnitsSectionFragment extends Fragment
 		View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 		actionBar = getActivity().getActionBar();
 
-		DatabaseDataSources.open();
-
-		unitsList = DatabaseDataSources.getAllUnits();
+		unitsList = DatabaseDataSource.getAllUnits();
 		adapter = new ArrayAdapter<Unit>(getActivity(), android.R.layout.simple_list_item_1, unitsList);
 
 		listView = (ListView) rootView.findViewById(R.id.list);
@@ -95,14 +93,12 @@ public class UnitsSectionFragment extends Fragment
 	@Override
 	public void onResume()
 	{
-		DatabaseDataSources.open();
 		super.onResume();
 	}
 
 	@Override
 	public void onPause()
 	{
-		DatabaseDataSources.close();
 		super.onPause();
 	}
 
@@ -153,19 +149,21 @@ public class UnitsSectionFragment extends Fragment
 			{
 				if (0 != actionBarEditText.getText().toString().length())
 				{
-					Unit newUnit = DatabaseDataSources.addUnit(actionBarEditText.getText().toString());
-					if (null != newUnit)
+					Unit unit  = DatabaseDataSource.addUnit(actionBarEditText.getText().toString());
+					if (null != unit)
 					{
-						adapter.add(newUnit);
+						adapter.add(new Unit());
 						adapter.notifyDataSetChanged();
 					}
 					else
 					{
-
+						Toast.makeText(getActivity(), "Nie mozna dodac jednostki.", Toast.LENGTH_LONG).show();
+						setEditModeSelected(false);
 					}
 				}
+				
+				Toast.makeText(getActivity(), "Nazwa jednostki nie moze byc pusta.", Toast.LENGTH_LONG).show();
 
-				setEditModeSelected(false);
 			}
 
 		});
@@ -179,15 +177,14 @@ public class UnitsSectionFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-				if (false != DatabaseDataSources.unitAvailableToDelete(unitToDelete))
+				if (false != DatabaseDataSource.deleteUnit(unitToDelete))
 				{
-					DatabaseDataSources.deleteUnit(unitToDelete);
 					adapter.remove(unitToDelete);
 					adapter.notifyDataSetChanged();
 				}
 				else
 				{
-					Toast.makeText(getActivity(), "Nie mo¿na usunac jednostki. Jest uzywana przez produkt.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), "Nie mozna usunac jednostki. Jest uzywana przez produkt.", Toast.LENGTH_LONG).show();
 				}
 
 				setDeleteModeSelected(false);

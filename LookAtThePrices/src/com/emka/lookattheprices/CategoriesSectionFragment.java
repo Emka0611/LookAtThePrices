@@ -20,7 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.emka.lookattheprices.database.DatabaseDataSources;
+import com.emka.lookattheprices.database.DatabaseDataSource;
 import com.emka.lookattheprices.model.Category;
 
 public class CategoriesSectionFragment extends Fragment
@@ -45,9 +45,7 @@ public class CategoriesSectionFragment extends Fragment
 		View rootView = inflater.inflate(R.layout.fragment_list, container, false);
 		actionBar = getActivity().getActionBar();
 
-		DatabaseDataSources.open();
-
-		categoriesList = DatabaseDataSources.getAllCategories();
+		categoriesList = DatabaseDataSource.getAllCategories();
 		adapter = new ArrayAdapter<Category>(getActivity(), android.R.layout.simple_list_item_1, categoriesList);
 		//adapter = new ProductAdapter(getActivity(), R.layout.rowlayout, categoriesList);
 		
@@ -98,14 +96,12 @@ public class CategoriesSectionFragment extends Fragment
 	@Override
 	public void onResume()
 	{
-		DatabaseDataSources.open();
 		super.onResume();
 	}
 
 	@Override
 	public void onPause()
 	{
-		DatabaseDataSources.close();
 		super.onPause();
 	}
 
@@ -156,7 +152,8 @@ public class CategoriesSectionFragment extends Fragment
 			{
 				if (0 != actionBarEditText.getText().toString().length())
 				{
-					Category newCategory = DatabaseDataSources.addCategory(actionBarEditText.getText().toString());
+					Category newCategory = DatabaseDataSource.addCategory(actionBarEditText.getText().toString());
+					
 					if (null != newCategory)
 					{
 						adapter.add(newCategory);
@@ -164,11 +161,12 @@ public class CategoriesSectionFragment extends Fragment
 					}
 					else
 					{
-
+						Toast.makeText(getActivity(), "Nie mozna dodac kategorii.", Toast.LENGTH_LONG).show();
+						setEditModeSelected(false);
 					}
 				}
 
-				setEditModeSelected(false);
+				Toast.makeText(getActivity(), "Nazwa kategorii nie moze byc pusta.", Toast.LENGTH_LONG).show();
 			}
 
 		});
@@ -208,15 +206,14 @@ public class CategoriesSectionFragment extends Fragment
 			@Override
 			public void onClick(View v)
 			{
-				if (false != DatabaseDataSources.categoryAvailableToDelete(categoryToDelete))
+				if (false != DatabaseDataSource.deleteCategory(categoryToDelete))
 				{
-					DatabaseDataSources.deleteCategory(categoryToDelete);
 					adapter.remove(categoryToDelete);
 					adapter.notifyDataSetChanged();
 				}
 				else
 				{
-					Toast.makeText(getActivity(), "Nie mo¿na usunac kategorii. Jest uzywana przez produkt.", Toast.LENGTH_LONG).show();
+					Toast.makeText(getActivity(), "Nie mozna usunac kategorii. Jest uzywana przez produkt.", Toast.LENGTH_LONG).show();
 				}
 				setDeleteModeSelected(false);
 			}

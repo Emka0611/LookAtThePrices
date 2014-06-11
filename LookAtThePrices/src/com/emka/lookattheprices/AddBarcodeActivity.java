@@ -11,8 +11,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.emka.lookattheprices.database.DatabaseDataSources;
-import com.emka.lookattheprices.model.Barcode;
+import com.emka.lookattheprices.database.DatabaseDataSource;
+import com.emka.lookattheprices.model.Product;
 
 public class AddBarcodeActivity extends Activity
 {
@@ -27,7 +27,7 @@ public class AddBarcodeActivity extends Activity
 	public static final String BARCODE = "barcode";
 	
 	// product
-	private long mProductId;
+	private int mProductId;
 	
 	// scan
 	private MenuItem menuItem = null;
@@ -41,7 +41,6 @@ public class AddBarcodeActivity extends Activity
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		getProductId();
-		openDataSource();
 		initEditTexts();
 	}
 
@@ -55,7 +54,7 @@ public class AddBarcodeActivity extends Activity
 	
 	private void initProductName()
 	{
-		String productName = DatabaseDataSources.getProduct(mProductId).getName();
+		String productName = DatabaseDataSource.getProduct(mProductId).getName();
 		mProductNameField.setText(productName);
 	}
 	
@@ -64,31 +63,19 @@ public class AddBarcodeActivity extends Activity
 	{
 		if (false != getIntent().getExtras().containsKey(ProductsSectionFragment.PRODUCT_SELECTED))
 		{
-			mProductId = getIntent().getExtras().getLong(ProductsSectionFragment.PRODUCT_SELECTED);
+			mProductId = getIntent().getExtras().getInt(ProductsSectionFragment.PRODUCT_SELECTED);
 		}
-	}
-	
-	private void openDataSource()
-	{
-		DatabaseDataSources.open();
-	}
-
-	private void closeDataSource()
-	{
-		DatabaseDataSources.close();
 	}
 	
 	@Override
 	public void onResume()
 	{
-		openDataSource();
 		super.onResume();
 	}
 
 	@Override
 	public void onPause()
 	{
-		closeDataSource();
 		super.onPause();
 	}
 	
@@ -146,11 +133,11 @@ public class AddBarcodeActivity extends Activity
 			// to create barcode
 			String barcode = mBarcodeField.getText().toString();
 
-			Barcode newBarcode= DatabaseDataSources.addBarcode(mProductId, barcode);
+			Product product = DatabaseDataSource.addBarcode(mProductId, barcode);
 
-			if (null != newBarcode)
+			if (null != product)
 			{
-				Toast.makeText(this, "Kod kreskowy dodano pomyœlnie", Toast.LENGTH_SHORT).show();
+				Toast.makeText(this, "Kod kreskowy dodano pomyslnie", Toast.LENGTH_SHORT).show();
 				onBackPressed();
 			}
 			else
@@ -160,7 +147,7 @@ public class AddBarcodeActivity extends Activity
 		}
 		else
 		{
-			Toast.makeText(this, "Uzupe³nij pole kodu kreskowego", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Uzupelnij pole kodu kreskowego", Toast.LENGTH_SHORT).show();
 			
 		}
 	}

@@ -1,30 +1,44 @@
 package com.emka.lookattheprices.model;
 
+
 public class Category
 {
-	private long m_id;
-	private String mName;
+	private int id;
+
+	private String name;
 	
-	public Category(long id, String name)
+	public Category()
 	{
-		m_id = id;
-		mName = name;
 	}
 	
+	public Category(String name)
+	{
+		this.name = name;
+	}
+	
+	public int getId()
+	{
+		return id;
+	}
+	
+	public void setId(int id)
+	{
+		this.id = id;
+	}
+
 	public String getName()
 	{
-		return mName;
+		return name;
 	}
-	
-	public long getId()
+
+	public void setName(String name)
 	{
-		return m_id;
+		this.name = name;
 	}
-	
+
 	@Override
 	public String toString()
 	{
-		return mName;
+		return name;
 	}
-	
 }
