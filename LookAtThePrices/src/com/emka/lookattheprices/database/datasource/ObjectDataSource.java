@@ -21,7 +21,6 @@ public class ObjectDataSource<T> implements IObjectDataSource<T>
 		return element;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public T create(T element)
 	{
