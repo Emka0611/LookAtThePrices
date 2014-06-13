@@ -1,10 +1,10 @@
-package com.emka.lookattheprices.database;
+package com.emka.lookattheprices.datasource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.emka.lookattheprices.database.datasource.ObjectDataSource;
-import com.emka.lookattheprices.database.datasource.ProductDataSource;
+import android.content.Context;
+
 import com.emka.lookattheprices.model.Barcode;
 import com.emka.lookattheprices.model.Category;
 import com.emka.lookattheprices.model.Price;
@@ -25,7 +25,7 @@ public class DatabaseDataSource
 		productsDataSource = new ProductDataSource();
 	}
 
-	public static Product addPrice(int productId, double price, double quantity, Unit unit)
+	public static Product addPrice(int productId, double price, double quantity, Unit unit, Context context)
 	{
 		Price newPrice = new Price(price, unit, quantity);
 		
@@ -37,7 +37,7 @@ public class DatabaseDataSource
 		return product;
 	}
 
-	public static Product addProduct(String name, Category category)
+	public static Product addProduct(String name, Category category, Context context)
 	{
 		Product newProduct = new Product(name, category);
 		newProduct = productsDataSource.create(newProduct);
@@ -128,6 +128,7 @@ public class DatabaseDataSource
 
 	public static List<Unit> getAllUnits()
 	{
+		//unitsDataSource.setContext(context);
 		return unitsDataSource.findAll();
 	}
 
@@ -141,7 +142,7 @@ public class DatabaseDataSource
 		return productsDataSource.findById(id).getBarcodesList();
 	}
 
-	public static List<Product> getAllProducts()
+	public static List<Product> getAllProducts(Context context)
 	{
 		return productsDataSource.findAll();
 	}

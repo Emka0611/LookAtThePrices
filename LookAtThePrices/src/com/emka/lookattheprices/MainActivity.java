@@ -10,7 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
-import com.emka.lookattheprices.database.DatabaseDataSource;
+import com.emka.lookattheprices.datasource.DatabaseDataSource;
 
 public class MainActivity extends Activity implements ActionBar.OnNavigationListener
 {

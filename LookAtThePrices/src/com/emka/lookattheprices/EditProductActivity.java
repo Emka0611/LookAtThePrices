@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.emka.lookattheprices.database.DatabaseDataSource;
+import com.emka.lookattheprices.datasource.DatabaseDataSource;
 import com.emka.lookattheprices.model.Category;
 import com.emka.lookattheprices.model.Product;
 

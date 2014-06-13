@@ -1,6 +1,6 @@
 package com.emka.lookattheprices;
 
-import com.emka.lookattheprices.database.DatabaseDataSource;
+import com.emka.lookattheprices.datasource.DatabaseDataSource;
 
 import android.app.Application;
 

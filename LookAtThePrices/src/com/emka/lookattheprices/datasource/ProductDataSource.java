@@ -1,4 +1,4 @@
-package com.emka.lookattheprices.database.datasource;
+package com.emka.lookattheprices.datasource;
 
 import java.util.ArrayList;
 import java.util.List;

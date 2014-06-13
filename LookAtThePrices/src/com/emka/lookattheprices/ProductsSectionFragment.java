@@ -31,7 +31,7 @@ import android.widget.PopupMenu.OnMenuItemClickListener;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
-import com.emka.lookattheprices.database.DatabaseDataSource;
+import com.emka.lookattheprices.datasource.DatabaseDataSource;
 import com.emka.lookattheprices.model.Category;
 import com.emka.lookattheprices.model.Product;
 
@@ -165,7 +165,7 @@ public class ProductsSectionFragment extends Fragment
 	{
 		if (false == isSearchModeEnabled() && false == mReturnedFromScanning)
 		{
-			addAll(DatabaseDataSource.getAllProducts());
+			addAll(DatabaseDataSource.getAllProducts(this.getActivity()));
 		}
 		mReturnedFromScanning = false;
 		super.onResume();
@@ -210,7 +210,7 @@ public class ProductsSectionFragment extends Fragment
 			mMenu.findItem(R.id.action_search).setVisible(true);
 			mMenu.findItem(R.id.action_new).setVisible(true);
 			mMenu.findItem(R.id.action_scan).setVisible(false);
-			addAll(DatabaseDataSource.getAllProducts());
+			addAll(DatabaseDataSource.getAllProducts(this.getActivity()));
 		}
 	}
 

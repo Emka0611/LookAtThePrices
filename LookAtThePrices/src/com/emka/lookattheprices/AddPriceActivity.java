@@ -13,7 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.emka.lookattheprices.database.DatabaseDataSource;
+import com.emka.lookattheprices.datasource.DatabaseDataSource;
 import com.emka.lookattheprices.model.Product;
 import com.emka.lookattheprices.model.Unit;
 
@@ -170,7 +170,7 @@ public class AddPriceActivity extends Activity
 			double quantity = Double.parseDouble(mQuantityField.getText().toString());
 			Unit unit = (Unit) mUnitsSpinner.getSelectedItem();
 
-			Product updatedPrice = DatabaseDataSource.addPrice(mProductId, priceValue, quantity, unit);
+			Product updatedPrice = DatabaseDataSource.addPrice(mProductId, priceValue, quantity, unit, this);
 			
 			if (null != updatedPrice)
 			{
