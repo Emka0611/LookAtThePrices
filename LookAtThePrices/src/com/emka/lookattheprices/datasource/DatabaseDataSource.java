@@ -3,6 +3,8 @@ package com.emka.lookattheprices.datasource;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import android.content.Context;
 
 import com.emka.lookattheprices.model.Barcode;
@@ -13,26 +15,28 @@ import com.emka.lookattheprices.model.Unit;
 
 public class DatabaseDataSource
 {
-	public static ObjectDataSource<Category> categoriesDataSource;
-	public static ObjectDataSource<Unit> unitsDataSource;
+	public static ObjectDataSource categoriesDataSource;
+	public static ObjectDataSource unitsDataSource;
 	
 	public static ProductDataSource productsDataSource;
 
 	public DatabaseDataSource()
 	{
-		categoriesDataSource = new ObjectDataSource<Category>();
-		unitsDataSource = new ObjectDataSource<Unit>();
-		productsDataSource = new ProductDataSource();
+		categoriesDataSource = new ObjectDataSource("categories");
+		unitsDataSource = new ObjectDataSource("units");
+		productsDataSource = new ProductDataSource("products");
 	}
 
 	public static Product addPrice(int productId, double price, double quantity, Unit unit, Context context)
 	{
 		Price newPrice = new Price(price, unit, quantity);
 		
-		Product product = productsDataSource.findById(productId);
+		Product product = new Product();
+		product.convertFromJSONObject(productsDataSource.findById(productId));
 		product.addPrice(newPrice);
 		
-		product = productsDataSource.update(product);
+		
+		product.convertFromJSONObject(productsDataSource.update(new JSONObject(product));
 		
 		return product;
 	}

@@ -3,7 +3,10 @@ package com.emka.lookattheprices.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Product implements Comparable<Product>
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class Product implements Comparable<Product>, IFromJSONObject<Product>
 {
 	private int id;
 
@@ -129,6 +132,12 @@ public class Product implements Comparable<Product>
 	}
 
 	public Price getBestPrice() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Product convertFromJSONObject(JSONObject json) throws JSONException {
 		// TODO Auto-generated method stub
 		return null;
 	}

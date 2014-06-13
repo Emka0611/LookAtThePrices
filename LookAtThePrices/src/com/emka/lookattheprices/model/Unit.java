@@ -1,7 +1,10 @@
 package com.emka.lookattheprices.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
-public class Unit
+
+public class Unit implements IFromJSONObject<Unit>
 {
 	private int id;
 	
@@ -38,6 +41,11 @@ public class Unit
 	public String toString()
 	{
 		return name;
+	}
+	@Override
+	public Unit convertFromJSONObject(JSONObject json) throws JSONException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

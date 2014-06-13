@@ -17,9 +17,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
-import org.json.JSONArray;
 
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -35,50 +33,30 @@ public class WebServiceTask extends AsyncTask<String, Integer, String>
     private static final int SOCKET_TIMEOUT = 5000;
     
     private int taskType = GET_TASK;
-    private String processMessage = "Processing...";
     
     private ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
 
     public WebServiceTask(int taskType, String processMessage)
     { 
         this.taskType = taskType;
-        this.processMessage = processMessage;
     }
 
     public void addNameValuePair(String name, String value)
     {
         params.add(new BasicNameValuePair(name, value));
     }
-    
-    public JSONArray handleResponse(String response)
-    {
-    	Log.d(TAG, "handleResponse::" + processMessage + ": " + response);
-    	JSONArray jso = null;
-    	
-        try
-        {
-        	jso = new JSONArray(response);
-        	Log.d(TAG, jso.toString());     
-        }
-        catch (Exception e)
-        {
-            Log.e(TAG, e.getLocalizedMessage(), e);
-        }
-        
-        return jso;
-    }
-    
+
     @Override
     protected void onPreExecute()
     {
-    	Log.d("WebServiceTask", "onPreExecute()");
+    	Log.d(TAG, "onPreExecute()");
     }
     
 
     @Override
     protected void onPostExecute(String response)
     {         
-        handleResponse(response);         
+    	Log.d(TAG, "onPostExecute()");       
     }
     
     private HttpResponse doResponse(String url)

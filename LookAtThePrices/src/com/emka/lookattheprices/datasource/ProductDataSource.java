@@ -5,8 +5,13 @@ import java.util.List;
 
 import com.emka.lookattheprices.model.Product;
 
-public class ProductDataSource extends ObjectDataSource<Product> implements IProductDataSource
+public class ProductDataSource extends ObjectDataSource implements IProductDataSource
 {
+	
+	ProductDataSource(String name)
+	{
+		super(name);
+	}
 
 	@Override
 	public List<Product> getProductsByCategoryId(long catId) {

@@ -1,16 +1,17 @@
 package com.emka.lookattheprices.datasource;
 
-import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-public interface IObjectDataSource<T>
+public interface IObjectDataSource
 {
-	List<T> findAll();
+	JSONArray findAll();
 
-	T findById(int id);
+	JSONObject findById(int id);
 
-	T create(T element);
+	JSONObject create(JSONObject element);
 
-	T update(T element);
+	JSONObject update(JSONObject element);
 
 	boolean delete(int id);
 }
